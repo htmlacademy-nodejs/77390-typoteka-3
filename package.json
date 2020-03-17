@@ -4,8 +4,9 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "test": "npm run eslint",
-    "eslint": "eslint --ext .js src/"
+    "start": "node ./src/service/service.js",
+    "eslint": "eslint --ext .js src/",
+    "test": "npm run eslint"
   },
   "repository": {
     "type": "git",
