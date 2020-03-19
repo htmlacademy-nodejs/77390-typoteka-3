@@ -23,6 +23,7 @@
     "eslint-config-htmlacademy": "0.5.2"
   },
   "dependencies": {
-    "colors": "1.4.0"
+    "colors": "1.4.0",
+    "date-fns": "2.11.0"
   }
 }
