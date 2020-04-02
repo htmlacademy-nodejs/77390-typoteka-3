@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const addDate = require(`date-fns/add`);
 const formatDate = require(`date-fns/format`);
 
@@ -94,7 +94,7 @@ const generatePosts = (count) => (
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args;
     let countOffer = Number.parseInt(count, 10);
     if (Number.isNaN(countOffer)) countOffer =  DEFAULT_COUNT;
@@ -105,12 +105,12 @@ module.exports = {
 
     const content = JSON.stringify(generatePosts(countOffer));
 
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        log(`Не могу создать файл`, {status: 'error'});
-        process.exit(ExitCode.error);
-      }
-      log(`Успешно. Файл создан`, {status: 'success'})
-    });
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      log(`Успешно. Файл создан`, {status: 'success'});
+    } catch (e) {
+      log(`Не могу создать файл: ${e}`, {status: 'error'});
+      process.exit(ExitCode.error);
+    }
   }
 };
