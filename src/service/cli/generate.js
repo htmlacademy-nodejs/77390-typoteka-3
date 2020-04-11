@@ -2,6 +2,8 @@
 
 const fs = require(`fs`).promises;
 const path = require(`path`);
+require(`../../utils/env`);
+
 const addDate = require(`date-fns/add`);
 const formatDate = require(`date-fns/format`);
 
@@ -21,7 +23,6 @@ const FILE_SENTENCES_PATH = path.join(__dirname, '..', '..', 'data', 'sentences.
 const FILE_CATEGORIES_PATH = path.join(__dirname, '..', '..', 'data', 'categories.txt');
 
 
-
 /**
  * Количество сгенерированных постов по умолчанию
  * @type {number}
@@ -31,7 +32,7 @@ const DEFAULT_COUNT = 1;
  * Имя файла для записи мок данных
  * @type {string}
  */
-const FILE_NAME = `mocks.json`;
+const FILE_NAME = process.env.MOCK_DATA_FILE_NAME;
 /**
  * Максимальное количество предложений в превью отдельного поста
  * @type {number}
