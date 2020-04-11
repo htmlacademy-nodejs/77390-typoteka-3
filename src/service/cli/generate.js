@@ -16,7 +16,7 @@ const {
 
 const {
   ExitCode,
-} = require(`../../constants`);
+} = require(`../../constants/cli`);
 
 const FILE_TITLES_PATH = path.join(__dirname, '..', '..', 'data', 'titles.txt');
 const FILE_SENTENCES_PATH = path.join(__dirname, '..', '..', 'data', 'sentences.txt');
