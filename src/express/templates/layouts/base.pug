@@ -1,0 +1,17 @@
+include ../mixins/header
+include ../mixins/scripts
+
+block vars
+  - var isAuth = false
+  - var isVendorScript = false
+  - var isVMainScript = false
+
+doctype html
+html(lang='ru')
+  include ../partials/head
+  body
+    .wrapper-color
+      +header(isAuth)
+      block content
+      include ../partials/footer
+      +scripts(isVendorScript, isVMainScript)
