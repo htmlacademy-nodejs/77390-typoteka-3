@@ -13,6 +13,7 @@ const {log} = require(`../../utils/log`);
 
 const {
   getRandomInt,
+  shuffle,
 } = require(`../../utils/data`);
 
 const {
@@ -22,6 +23,7 @@ const {
 const FILE_TITLES_PATH = path.join(__dirname, '..', '..', 'data', 'titles.txt');
 const FILE_SENTENCES_PATH = path.join(__dirname, '..', '..', 'data', 'sentences.txt');
 const FILE_CATEGORIES_PATH = path.join(__dirname, '..', '..', 'data', 'categories.txt');
+const FILE_COMMENTS_PATH = path.join(__dirname, '..', '..', 'data', 'comments.txt');
 
 
 /**
@@ -45,6 +47,12 @@ const MAX_SENTENCES_IN_PREVIEW = 5;
  * @type {number}
  */
 const MAX_SENTENCES_IN_FULL_TEXT = 25;
+/**
+ * Максимальное количество комментариев к посту
+ * Случайное разумное число
+ * @type {number}
+ */
+const MAX_COMMENTS = 5;
 
 const today = Date.now();
 const minCreatedDate = +addDate(today, {
@@ -85,19 +93,38 @@ const getDate = () => {
 };
 
 /**
+ * Генерация массива случайных комментариев
+ * @param {array} comments
+ * @return {object[]}
+ */
+const generateComments = (comments) => {
+  const maxSentencesInComment = comments.length;
+  return Array(getRandomInt(1, MAX_COMMENTS))
+    .fill(undefined)
+    .map(() => ({
+      id: nanoid(),
+      text: shuffle(comments)
+        .slice(1, getRandomInt(2, maxSentencesInComment - 1))
+        .join(` `),
+    }))
+};
+
+/**
  * @return {Promise<{sentences: Array, titles: Array, categories: Array}>}
  */
 const getMockData = async () => {
   try {
-    const [titles, sentences, categories] = await Promise.all([
+    const [titles, sentences, categories, comments] = await Promise.all([
       readFileToArray(FILE_TITLES_PATH),
       readFileToArray(FILE_SENTENCES_PATH),
       readFileToArray(FILE_CATEGORIES_PATH),
+      readFileToArray(FILE_COMMENTS_PATH),
     ]);
     return {
       titles,
       sentences,
       categories,
+      comments,
     };
   } catch (e) {
     throw e;
@@ -114,7 +141,7 @@ const getMockData = async () => {
  * @return {object[]}
  */
 const generatePosts = (data, count) => {
-  const {titles, sentences, categories} = data;
+  const {titles, sentences, categories, comments} = data;
   return Array(count).fill({}).map(() => ({
     id: nanoid(),
     title: titles[getRandomInt(0, titles.length - 1)],
@@ -122,14 +149,20 @@ const generatePosts = (data, count) => {
     announce: getText(sentences, MAX_SENTENCES_IN_PREVIEW),
     fullText: getText(sentences, MAX_SENTENCES_IN_FULL_TEXT),
     category: getCategories(categories),
+    comments: generateComments(comments),
   }))
 };
 
 module.exports = {
   name: `--generate`,
   async run(args) {
-    const [count] = args;
+    const [count, beautiful] = args;
     let countPosts = Number.parseInt(count, 10);
+    /**
+     * Нужно ли красивое оформление результатов
+     * @type {boolean}
+     */
+    const isBeautiful = beautiful === `beautiful`;
     let content;
     if (Number.isNaN(countPosts)) countPosts =  DEFAULT_COUNT;
     if (countPosts > 1000) {
@@ -139,7 +172,9 @@ module.exports = {
 
     try {
       const data = await getMockData();
-      content = JSON.stringify(generatePosts(data, countPosts));
+      content = JSON.stringify(
+        generatePosts(data, countPosts), null, isBeautiful ? 2 : 0
+      );
     } catch (e) {
       log(`Не могу получить данные для генерации: ${e}`, {status: 'error'});
       process.exit(ExitCode.error);
