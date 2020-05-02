@@ -2,6 +2,7 @@
 
 const fs = require(`fs`).promises;
 const path = require(`path`);
+const nanoid = require(`nanoid`).nanoid;
 require(`../../utils/env`);
 
 const addDate = require(`date-fns/add`);
@@ -115,6 +116,7 @@ const getMockData = async () => {
 const generatePosts = (data, count) => {
   const {titles, sentences, categories} = data;
   return Array(count).fill({}).map(() => ({
+    id: nanoid(),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getDate(),
     announce: getText(sentences, MAX_SENTENCES_IN_PREVIEW),
