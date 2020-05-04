@@ -30,5 +30,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(colors.green(`Ожидаю соединений на ${PORT}`))
+  console.log(colors.green(`Ожидаю соединений на ${PORT}`));
 });

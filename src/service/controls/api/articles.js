@@ -26,7 +26,7 @@ const {
 } = require(`../../../utils/get-response`);
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true});
-require(`ajv-errors`)(ajv, {singleError: false} );
+require(`ajv-errors`)(ajv, {singleError: false});
 
 const ctrlGetArticles = async (req, res) => {
   try {
@@ -43,14 +43,14 @@ const ctrlAddArticle = async (req, res) => {
       id: nanoid(),
       ...newArticle,
       createdDate: newArticle.createDate || formatDate(Date.now(), `yyyy-MM-dd HH:mm:SS`),
-    }
+    };
     const valid = ajv.validate(schemaArticle, article);
     if (!valid) {
       res
         .status(HttpCode.BAD_REQUEST)
         .json(getErrorResponse(MESSAGE_ARTICLE_BED_FIELD, HttpCode.BAD_REQUEST, {
           failFields: getFailFields(ajv.errors),
-        }))
+        }));
     } else {
       articles.push(article);
       res.json(getItemSuccessResponse(article));
@@ -65,7 +65,7 @@ const ctrlAddArticle = async (req, res) => {
 const ctrlGetArticle = async (req, res) => {
   try {
     const id = req.params.articleId;
-    const article = articles.find(it => it.id === id);
+    const article = articles.find((it) => it.id === id);
     if (article) {
       res.json(getItemSuccessResponse(article));
     } else {
@@ -84,7 +84,7 @@ const ctrlUpdateArticle = async (req, res) => {
   try {
     const id = req.params.articleId;
     const newArticle = req.body.item;
-    const index = articles.findIndex(it => it.id === id);
+    const index = articles.findIndex((it) => it.id === id);
     if (index !== -1) {
       const article = {
         ...articles[index],
@@ -96,7 +96,7 @@ const ctrlUpdateArticle = async (req, res) => {
           .status(HttpCode.BAD_REQUEST)
           .json(getErrorResponse(MESSAGE_ARTICLE_BED_FIELD, HttpCode.BAD_REQUEST, {
             failFields: getFailFields(ajv.errors),
-          }))
+          }));
       } else {
         articles[index] = article;
         res.json(getItemSuccessResponse(article));
@@ -116,7 +116,7 @@ const ctrlUpdateArticle = async (req, res) => {
 const ctrlRemoveArticle = async (req, res) => {
   try {
     const id = req.params.articleId;
-    const index = articles.findIndex(it => it.id === id);
+    const index = articles.findIndex((it) => it.id === id);
     if (index !== -1) {
       articles.splice(index, 1);
     }
@@ -132,7 +132,7 @@ const ctrlRemoveArticle = async (req, res) => {
 const ctrlGetArticleComments = async (req, res) => {
   try {
     const id = req.params.articleId;
-    const article = articles.find(it => it.id === id);
+    const article = articles.find((it) => it.id === id);
     if (article) {
       const comments = article.comments || [];
       res.json(getItemsSuccessResponse(comments, {total: comments.length}));
@@ -151,7 +151,7 @@ const ctrlGetArticleComments = async (req, res) => {
 const ctrlAddArticleComment = async (req, res) => {
   try {
     const id = req.params.articleId;
-    const article = articles.find(it => it.id === id);
+    const article = articles.find((it) => it.id === id);
     if (article) {
       const comments = article.comments || [];
       const comment = {
@@ -178,10 +178,10 @@ const ctrlRemoveArticleComment = async (req, res) => {
   try {
     const articleId = req.params.articleId;
     const commentId = req.params.commentId;
-    const article = articles.find(it => it.id === articleId);
+    const article = articles.find((it) => it.id === articleId);
     if (article) {
       const comments = article.comments || [];
-      const commentIndex = comments.findIndex(it => it.id === commentId);
+      const commentIndex = comments.findIndex((it) => it.id === commentId);
       if (commentIndex !== -1) {
         comments.splice(commentIndex, 1);
       }

@@ -12,7 +12,7 @@ const ctrlSearch = async (req, res) => {
   try {
     const {query} = req.query;
     const items = query ?
-      articles.filter(it => it.title.toLowerCase().includes(query.toLowerCase())) :
+      articles.filter((it) => it.title.toLowerCase().includes(query.toLowerCase())) :
       articles;
     res.json(getItemsSuccessResponse(items, {total: items.length}));
   } catch (err) {

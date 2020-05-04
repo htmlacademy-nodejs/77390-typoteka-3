@@ -13,4 +13,4 @@ const articles = getAllArticles();
 
 module.exports = {
   articles,
-}
+};

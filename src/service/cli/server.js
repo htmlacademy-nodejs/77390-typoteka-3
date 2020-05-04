@@ -27,7 +27,7 @@ module.exports = {
 
     app.listen(port, (err) => {
       if (err) {
-        return log(`Ошибка при создании сервера: ${err}`, {status: 'error'});
+        return log(`Ошибка при создании сервера: ${err}`, {status: `error`});
       }
 
       return console.info(colors.green(`Ожидаю соединений на ${port}`));

@@ -24,10 +24,10 @@ const {
   PATH_TO_DATA,
 } = require(`../../constants/paths`);
 
-const FILE_TITLES_PATH = path.join(PATH_TO_DATA, 'titles.txt');
-const FILE_SENTENCES_PATH = path.join(PATH_TO_DATA, 'sentences.txt');
-const FILE_CATEGORIES_PATH = path.join(PATH_TO_DATA, 'categories.txt');
-const FILE_COMMENTS_PATH = path.join(PATH_TO_DATA, 'comments.txt');
+const FILE_TITLES_PATH = path.join(PATH_TO_DATA, `titles.txt`);
+const FILE_SENTENCES_PATH = path.join(PATH_TO_DATA, `sentences.txt`);
+const FILE_CATEGORIES_PATH = path.join(PATH_TO_DATA, `categories.txt`);
+const FILE_COMMENTS_PATH = path.join(PATH_TO_DATA, `comments.txt`);
 
 /**
  * Количество сгенерированных постов по умолчанию
@@ -71,7 +71,7 @@ const getCategories = (allCategories) => {
   return [...new Set(new Array(getRandomInt(1, allCategories.length - 1))
     .fill(undefined)
     .map(() => allCategories[getRandomInt(0, allCategories.length - 1)]
-  ))]
+    ))];
 };
 
 /**
@@ -109,7 +109,7 @@ const generateComments = (comments) => {
       text: shuffle(comments)
         .slice(1, getRandomInt(2, maxSentencesInComment - 1))
         .join(` `),
-    }))
+    }));
 };
 
 /**
@@ -153,7 +153,7 @@ const generatePosts = (data, count) => {
     fullText: getText(sentences, MAX_SENTENCES_IN_FULL_TEXT),
     categories: getCategories(categories),
     comments: generateComments(comments),
-  }))
+  }));
 };
 
 module.exports = {
@@ -167,27 +167,29 @@ module.exports = {
      */
     const isBeautiful = beautiful === `beautiful`;
     let content;
-    if (Number.isNaN(countPosts)) countPosts =  DEFAULT_COUNT;
+    if (Number.isNaN(countPosts)) {
+      countPosts = DEFAULT_COUNT;
+    }
     if (countPosts > 1000) {
-      log(`Не больше 1000 объявлений`, {status: 'error'});
+      log(`Не больше 1000 объявлений`, {status: `error`});
       process.exit(ExitCode.error);
     }
 
     try {
       const data = await getMockData();
       content = JSON.stringify(
-        generatePosts(data, countPosts), null, isBeautiful ? 2 : 0
+          generatePosts(data, countPosts), null, isBeautiful ? 2 : 0
       );
     } catch (e) {
-      log(`Не могу получить данные для генерации: ${e}`, {status: 'error'});
+      log(`Не могу получить данные для генерации: ${e}`, {status: `error`});
       process.exit(ExitCode.error);
     }
 
     try {
       await fs.writeFile(FILE_NAME, content);
-      log(`Успешно. Файл создан`, {status: 'success'});
+      log(`Успешно. Файл создан`, {status: `success`});
     } catch (e) {
-      log(`Не могу создать файл: ${e}`, {status: 'error'});
+      log(`Не могу создать файл: ${e}`, {status: `error`});
       process.exit(ExitCode.error);
     }
   }
