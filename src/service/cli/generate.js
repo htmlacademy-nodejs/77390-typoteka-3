@@ -20,11 +20,14 @@ const {
   ExitCode,
 } = require(`../../constants/cli`);
 
-const FILE_TITLES_PATH = path.join(__dirname, '..', '..', 'data', 'titles.txt');
-const FILE_SENTENCES_PATH = path.join(__dirname, '..', '..', 'data', 'sentences.txt');
-const FILE_CATEGORIES_PATH = path.join(__dirname, '..', '..', 'data', 'categories.txt');
-const FILE_COMMENTS_PATH = path.join(__dirname, '..', '..', 'data', 'comments.txt');
+const {
+  PATH_TO_DATA,
+} = require(`../../constants/paths`);
 
+const FILE_TITLES_PATH = path.join(PATH_TO_DATA, 'titles.txt');
+const FILE_SENTENCES_PATH = path.join(PATH_TO_DATA, 'sentences.txt');
+const FILE_CATEGORIES_PATH = path.join(PATH_TO_DATA, 'categories.txt');
+const FILE_COMMENTS_PATH = path.join(PATH_TO_DATA, 'comments.txt');
 
 /**
  * Количество сгенерированных постов по умолчанию
@@ -148,7 +151,7 @@ const generatePosts = (data, count) => {
     createdDate: getDate(),
     announce: getText(sentences, MAX_SENTENCES_IN_PREVIEW),
     fullText: getText(sentences, MAX_SENTENCES_IN_FULL_TEXT),
-    category: getCategories(categories),
+    categories: getCategories(categories),
     comments: generateComments(comments),
   }))
 };
