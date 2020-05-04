@@ -122,7 +122,6 @@ const ctrlRemoveArticle = async (req, res) => {
     }
     res.status(HttpCode.NO_CONTENT).send();
   } catch (err) {
-    console.log(err);
     res
       .status(HttpCode.INTERNAL_SERVER_ERROR)
       .json(getErrorResponse(MESSAGE_INTERNAL_SERVER_ERROR, HttpCode.INTERNAL_SERVER_ERROR));
@@ -192,7 +191,6 @@ const ctrlRemoveArticleComment = async (req, res) => {
         .json(getErrorResponse(MESSAGE_ARTICLE_NOT_FOUND, HttpCode.NOT_FOUND));
     }
   } catch (err) {
-    console.log(err);
     res
       .status(HttpCode.INTERNAL_SERVER_ERROR)
       .json(getErrorResponse(MESSAGE_INTERNAL_SERVER_ERROR, HttpCode.INTERNAL_SERVER_ERROR));
