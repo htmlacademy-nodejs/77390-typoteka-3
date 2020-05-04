@@ -2,8 +2,10 @@
 
 const {Router} = require(`express`);
 const router = new Router();
-const {ctrlPostsMain} = require(`../controls/posts`);
+const {
+  ctrlSearch,
+} = require(`../../controls/api/search`);
 
-router.get(`/`, ctrlPostsMain);
+router.get(`/`, ctrlSearch);
 
 module.exports = router;

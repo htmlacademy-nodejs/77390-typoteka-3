@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "required": [
+    "title",
+    "categories",
+    "announce",
+    "fullText"
+  ],
+  "errorMessage": {
+    "required": "Обязательное поле"
+  },
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 30,
+      "maxLength": 250,
+      "errorMessage": {
+        "minLength": "Минимум 30 символов",
+        "maxLength": "Максимум 250 символов"
+      }
+    },
+    "preview": {
+      "type": "string"
+    },
+    "createdDate": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "errorMessage": {
+        "required": "Обязательное поле"
+      }
+    },
+    "announce": {
+      "type": "string",
+      "maxLength": 250,
+      "minLength": 30,
+      "errorMessage": {
+        "required": "Обязательное поле"
+      }
+    },
+    "fullText": {
+      "type": "string",
+      "maxLength": 1000,
+      "errorMessage": {
+        "required": "Обязательное поле"
+      }
+    }
+  }
+}
