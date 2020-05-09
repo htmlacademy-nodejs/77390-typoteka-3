@@ -46,10 +46,16 @@ const ctrlAddArticle = async (req, res) => {
     };
     const valid = ajv.validate(schemaArticle, article);
     if (!valid) {
+      const failFields = getFailFields(ajv.errors);
+      res.locals.error = {
+        message: MESSAGE_ARTICLE_BED_FIELD,
+        code: HttpCode.BAD_REQUEST,
+        failFields,
+      };
       res
         .status(HttpCode.BAD_REQUEST)
         .json(getErrorResponse(MESSAGE_ARTICLE_BED_FIELD, HttpCode.BAD_REQUEST, {
-          failFields: getFailFields(ajv.errors),
+          failFields,
         }));
     } else {
       articles.push(article);
@@ -92,10 +98,16 @@ const ctrlUpdateArticle = async (req, res) => {
       };
       const valid = ajv.validate(schemaArticle, article);
       if (!valid) {
+        const failFields = getFailFields(ajv.errors);
+        res.locals.error = {
+          message: MESSAGE_ARTICLE_BED_FIELD,
+          code: HttpCode.BAD_REQUEST,
+          failFields,
+        };
         res
           .status(HttpCode.BAD_REQUEST)
           .json(getErrorResponse(MESSAGE_ARTICLE_BED_FIELD, HttpCode.BAD_REQUEST, {
-            failFields: getFailFields(ajv.errors),
+            failFields,
           }));
       } else {
         articles[index] = article;

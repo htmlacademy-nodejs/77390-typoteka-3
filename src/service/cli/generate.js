@@ -9,7 +9,7 @@ const addDate = require(`date-fns/add`);
 const formatDate = require(`date-fns/format`);
 
 const {readFileToArray} = require(`../../utils/files`);
-const {log} = require(`../../utils/log`);
+const {print} = require(`../../utils/print`);
 
 const {
   getRandomInt,
@@ -171,7 +171,7 @@ module.exports = {
       countPosts = DEFAULT_COUNT;
     }
     if (countPosts > 1000) {
-      log(`Не больше 1000 объявлений`, {status: `error`});
+      print(`Не больше 1000 объявлений`, {status: `error`});
       process.exit(ExitCode.error);
     }
 
@@ -181,15 +181,15 @@ module.exports = {
           generatePosts(data, countPosts), null, isBeautiful ? 2 : 0
       );
     } catch (e) {
-      log(`Не могу получить данные для генерации: ${e}`, {status: `error`});
+      print(`Не могу получить данные для генерации: ${e}`, {status: `error`});
       process.exit(ExitCode.error);
     }
 
     try {
       await fs.writeFile(FILE_NAME, content);
-      log(`Успешно. Файл создан`, {status: `success`});
+      print(`Успешно. Файл создан`, {status: `success`});
     } catch (e) {
-      log(`Не могу создать файл: ${e}`, {status: `error`});
+      print(`Не могу создать файл: ${e}`, {status: `error`});
       process.exit(ExitCode.error);
     }
   }
