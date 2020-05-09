@@ -3,9 +3,14 @@
 const {Router} = require(`express`);
 const router = new Router();
 const {
-  ctrlSearch,
+  getCtrlSearch,
 } = require(`../../controls/api/search`);
 
-router.get(`/`, ctrlSearch);
+const getRouterSearch = (service) => {
+  router.get(`/`, getCtrlSearch(service));
+  return router;
+};
 
-module.exports = router;
+module.exports = {
+  getRouterSearch
+};

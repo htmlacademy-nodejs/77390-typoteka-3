@@ -1,10 +1,6 @@
 'use strict';
 
 const {
-  getCategories,
-} = require(`./helpers/categories`);
-
-const {
   getItemsSuccessResponse,
   getErrorResponse,
 } = require(`../../../utils/get-response`);
@@ -17,17 +13,20 @@ const {
   MESSAGE_INTERNAL_SERVER_ERROR,
 } = require(`../../../constants/messages`);
 
-const ctrlGetCategories = async (req, res) => {
-  try {
-    const items = await getCategories();
-    res.json(getItemsSuccessResponse(items, {total: items.length}));
-  } catch (err) {
-    res
-      .status(HttpCode.INTERNAL_SERVER_ERROR)
-      .json(getErrorResponse(MESSAGE_INTERNAL_SERVER_ERROR, HttpCode.INTERNAL_SERVER_ERROR));
-  }
+const getCtrlGetCategories = (service) => {
+  const ctrlGetCategories = async (req, res) => {
+    try {
+      const items = await service.findAll();
+      await res.json(getItemsSuccessResponse(items, {total: items.length}));
+    } catch (err) {
+      await res
+        .status(HttpCode.INTERNAL_SERVER_ERROR)
+        .json(getErrorResponse(MESSAGE_INTERNAL_SERVER_ERROR, HttpCode.INTERNAL_SERVER_ERROR));
+    }
+  };
+  return ctrlGetCategories;
 };
 
 module.exports = {
-  ctrlGetCategories,
+  getCtrlGetCategories,
 };

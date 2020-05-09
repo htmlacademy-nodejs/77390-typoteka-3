@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require(`fs`).promises;
+const fsPromise = require(`fs`).promises;
+const fs = require(`fs`);
 
 /**
  * Чтение файла и возврат строк в виде массива
@@ -9,7 +10,25 @@ const fs = require(`fs`).promises;
  */
 const readFileToArray = async (filePath) => {
   try {
-    const content = await fs.readFile(filePath, `utf8`);
+    const content = await fsPromise.readFile(filePath, `utf8`);
+    return content
+      .trim()
+      .split(`\n`)
+      .map((el) => el.trim())
+      .filter((el) => el !== ``);
+  } catch (e) {
+    throw e;
+  }
+};
+
+/**
+ * Чтение файла и возврат строк в виде массива. Синхронное чтение файла
+ * @param {string} filePath
+ * @return {array}
+ */
+const readFileToArraySync = (filePath) => {
+  try {
+    const content = fs.readFileSync(filePath, `utf8`);
     return content
       .trim()
       .split(`\n`)
@@ -22,4 +41,5 @@ const readFileToArray = async (filePath) => {
 
 module.exports = {
   readFileToArray,
+  readFileToArraySync,
 };
