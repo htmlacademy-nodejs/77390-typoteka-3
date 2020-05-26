@@ -1,25 +1,22 @@
 'use strict';
 
 const {
-  articles,
-} = require(`./helpers/articles`);
-
-const {
   getItemsSuccessResponse,
 } = require(`../../../utils/get-response`);
 
-const ctrlSearch = async (req, res) => {
-  try {
-    const {query} = req.query;
-    const items = query ?
-      articles.filter((it) => it.title.toLowerCase().includes(query.toLowerCase())) :
-      articles;
-    res.json(getItemsSuccessResponse(items, {total: items.length}));
-  } catch (err) {
-    res.json(getItemsSuccessResponse([], {total: 0}));
-  }
+const getCtrlSearch = (service) => {
+  const ctrlSearch = async (req, res) => {
+    try {
+      const {query} = req.query;
+      const items = await service.search(query);
+      return res.json(getItemsSuccessResponse(items, {total: items.length}));
+    } catch (err) {
+      return res.json(getItemsSuccessResponse([], {total: 0}));
+    }
+  };
+  return ctrlSearch;
 };
 
 module.exports = {
-  ctrlSearch
+  getCtrlSearch,
 };

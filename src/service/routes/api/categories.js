@@ -3,9 +3,15 @@
 const {Router} = require(`express`);
 const router = new Router();
 const {
-  ctrlGetCategories,
+  getCtrlGetCategories,
 } = require(`../../controls/api/categories`);
 
-router.get(`/`, ctrlGetCategories);
 
-module.exports = router;
+const getRouterCategories = (service) => {
+  router.get(`/`, getCtrlGetCategories(service));
+  return router;
+};
+
+module.exports = {
+  getRouterCategories
+};
